@@ -1,0 +1,63 @@
+/home/user4/anaconda3/lib/python3.6/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+
+**************************
+
+[workers]: 4
+
+[num_points]: 1024
+
+[num_classes]: 40
+
+[batch_size]: 32
+
+[base_lr]: 0.001
+
+[lr_clip]: 1e-05
+
+[lr_decay]: 0.7
+
+[decay_step]: 21
+
+[epochs]: 200
+
+[weight_decay]: 0
+
+[bn_momentum]: 0.9
+
+[bnm_clip]: 0.01
+
+[bn_decay]: 0.5
+
+[evaluate]: 1
+
+[val_freq_epoch]: 0.5
+
+[print_freq_iter]: 20
+
+[input_channels]: 0
+
+[relation_prior]: 1
+
+[checkpoint]: 
+
+[save_path]: cls
+
+[data_root]: /home/user4/database/BosphorusDB/
+
+**************************
+
+/home/user4/coding/Relation-Shape-CNN/models/../utils/pointnet2_modules.py:113: UserWarning: nn.init.kaiming_normal is now deprecated in favor of nn.init.kaiming_normal_.
+  init(xyz_raising.weight)
+/home/user4/coding/Relation-Shape-CNN/models/../utils/pointnet2_modules.py:115: UserWarning: nn.init.constant is now deprecated in favor of nn.init.constant_.
+  nn.init.constant(xyz_raising.bias, 0)
+Traceback (most recent call last):
+  File "train_cls.py", line 170, in <module>
+    main()
+  File "train_cls.py", line 76, in main
+    model = RSCNN_SSN(num_classes = args.num_classes, input_channels = args.input_channels, relation_prior = args.relation_prior, use_xyz = True)
+  File "/home/user4/coding/Relation-Shape-CNN/models/rscnn_ssn_cls.py", line 42, in __init__
+    relation_prior=relation_prior
+  File "/home/user4/coding/Relation-Shape-CNN/models/../utils/pointnet2_modules.py", line 134, in __init__
+    mapping = [mapping_func1, mapping_func2, cr_mapping, xyz_raising]
+UnboundLocalError: local variable 'cr_mapping' referenced before assignment

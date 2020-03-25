@@ -1,0 +1,59 @@
+/home/user4/anaconda3/lib/python3.6/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+
+**************************
+
+[workers]: 4
+
+[num_points]: 1024
+
+[num_classes]: 40
+
+[batch_size]: 32
+
+[base_lr]: 0.001
+
+[lr_clip]: 1e-05
+
+[lr_decay]: 0.7
+
+[decay_step]: 21
+
+[epochs]: 200
+
+[weight_decay]: 0
+
+[bn_momentum]: 0.9
+
+[bnm_clip]: 0.01
+
+[bn_decay]: 0.5
+
+[evaluate]: 1
+
+[val_freq_epoch]: 0.5
+
+[print_freq_iter]: 20
+
+[input_channels]: 0
+
+[relation_prior]: 1
+
+[checkpoint]: 
+
+[save_path]: cls
+
+[data_root]: /home/user4/database/BosphorusDB/
+
+**************************
+
+Traceback (most recent call last):
+  File "train_cls.py", line 168, in <module>
+    main()
+  File "train_cls.py", line 56, in main
+    train_dataset = myData(num_points=args.num_points, root=args.data_root, transforms=train_transforms)
+  File "/home/user4/coding/Relation-Shape-CNN/data/ModelNet40Loader.py", line 124, in __init__
+    self.train_data, self.train_label, self.test_data, self.test_label = _split_data(self.data, self.label)
+  File "/home/user4/coding/Relation-Shape-CNN/data/ModelNet40Loader.py", line 32, in _split_data
+    data, label = (data[arr], label[arr])
+TypeError: only integer scalar arrays can be converted to a scalar index

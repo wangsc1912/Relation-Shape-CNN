@@ -104,20 +104,20 @@ class PointnetSAModuleMSG(_PointnetSAModuleBase):
             assert False, "relation_prior can only be 0, 1, 2."
         
         if first_layer:
-            mapping_func1 = nn.Conv2d(in_channels = in_channels, out_channels = math.floor(C_out / 2), kernel_size = (1, 1), 
-                                      stride = (1, 1), bias = bias)
-            mapping_func2 = nn.Conv2d(in_channels = math.floor(C_out / 2), out_channels = 16, kernel_size = (1, 1), 
-                                  stride = (1, 1), bias = bias)
-            xyz_raising = nn.Conv2d(in_channels = C_in, out_channels = 16, kernel_size = (1, 1), 
-                                  stride = (1, 1), bias = bias)
+            mapping_func1 = nn.Conv2d(in_channels=in_channels, out_channels=math.floor(C_out / 2), kernel_size=(1, 1),
+                                      stride=(1, 1), bias=bias)
+            mapping_func2 = nn.Conv2d(in_channels=math.floor(C_out / 2), out_channels=16, kernel_size=(1, 1),
+                                      stride=(1, 1), bias=bias)
+            xyz_raising = nn.Conv2d(in_channels=C_in, out_channels=16, kernel_size=(1, 1),
+                                    stride=(1, 1), bias=bias)
             init(xyz_raising.weight)
             if bias:
                 nn.init.constant(xyz_raising.bias, 0)
         elif npoint is not None:
-            mapping_func1 = nn.Conv2d(in_channels = in_channels, out_channels = math.floor(C_out / 4), kernel_size = (1, 1), 
-                                      stride = (1, 1), bias = bias)
-            mapping_func2 = nn.Conv2d(in_channels = math.floor(C_out / 4), out_channels = C_in, kernel_size = (1, 1), 
-                                  stride = (1, 1), bias = bias)
+            mapping_func1 = nn.Conv2d(in_channels=in_channels, out_channels=math.floor(C_out / 4), kernel_size=(1, 1),
+                                      stride=(1, 1), bias=bias)
+            mapping_func2 = nn.Conv2d(in_channels=math.floor(C_out / 4), out_channels=C_in, kernel_size=(1, 1),
+                                      stride=(1, 1), bias=bias)
         if npoint is not None:
             init(mapping_func1.weight)
             init(mapping_func2.weight)
@@ -126,13 +126,14 @@ class PointnetSAModuleMSG(_PointnetSAModuleBase):
                 nn.init.constant(mapping_func2.bias, 0)    
                      
             # channel raising mapping
-            cr_mapping = nn.Conv1d(in_channels = C_in if not first_layer else 16, out_channels = C_out, kernel_size = 1, 
-                                      stride = 1, bias = bias)
+            cr_mapping = nn.Conv1d(in_channels=C_in if not first_layer else 16, out_channels=C_out, kernel_size=1,
+                                   stride=1, bias=bias)
             init(cr_mapping.weight)
             nn.init.constant(cr_mapping.bias, 0)
         
         if first_layer:
             mapping = [mapping_func1, mapping_func2, cr_mapping, xyz_raising]
+            # mapping = [mapping_func1, mapping_func2, xyz_raising]
         elif npoint is not None:
             mapping = [mapping_func1, mapping_func2, cr_mapping]
         
@@ -147,9 +148,9 @@ class PointnetSAModuleMSG(_PointnetSAModuleBase):
             if use_xyz:
                 mlp_spec[0] += 3
             if npoint is not None:
-                self.mlps.append(pt_utils.SharedRSConv(mlp_spec, mapping = mapping, relation_prior = relation_prior, first_layer = first_layer))
+                self.mlps.append(pt_utils.SharedRSConv(mlp_spec, mapping=mapping, relation_prior=relation_prior, first_layer=first_layer))
             else:   # global convolutional pooling
-                self.mlps.append(pt_utils.GloAvgConv(C_in = C_in, C_out = C_out))
+                self.mlps.append(pt_utils.GloAvgConv(C_in=C_in, C_out=C_out))
 
 
 class PointnetSAModule(PointnetSAModuleMSG):

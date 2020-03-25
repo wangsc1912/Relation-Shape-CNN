@@ -8,19 +8,63 @@ sys.path.append(BASE_DIR)
 
 def _get_data_files(list_filename):
     with open(list_filename) as f:
-        return [line.rstrip()[5:] for line in f]
+        # return [line.rstrip()[5:] for line in f]
+        return np.array([line.rstrip() for line in f])
+
 
 def _load_data_file(name):
     f = h5py.File(name)
     data = f['data'][:]
     label = f['label'][:]
     return data, label
-    
+
+
+def _get_point_file(point_filename):
+    with open(point_filename) as f:
+        return np.array([line.rstrip().split() for line in f])
+
+
+def _split_data(data, label, val=False):
+    # num_example = data.shape[0]
+    num_example = len(data)
+    arr = np.arange(num_example)
+    np.random.shuffle(arr)
+    data, label = (data[arr], label[arr])
+    if val:
+        ratio0, ratio1 =0.8, 0.9
+        s0 = np.int(num_example*ratio0)
+        s1 = np.int(num_example*ratio1)
+        # samples splited
+        x_train = data[:s0]
+        y_train = label[:s0]
+        x_val = data[s0:s1]
+        y_val = label[s0:s1]
+        x_test = data[s1:]
+        y_test = label[s1:]
+        return x_train, y_train, x_val, y_val, x_test, y_test
+    else:
+        ratio = 0.9
+        s = np.int(num_example*ratio)
+        x_train = data[:s]
+        y_train = label[:s]
+        x_test = data[s:]
+        y_test = label[s:]
+        return x_train, y_train, x_test, y_test
+
+def getDataFiles(list_filename):
+    # return [line.rstrip() for line in open(list_filename)]
+    files = [line.rstrip() for line in open(list_filename)]
+    trian_files = files[:-2]
+    test_file = []
+    test_f = files[-1]
+    test_file.append(test_f)
+    return trian_files, test_file
+
+
 class ModelNet40Cls(data.Dataset):
 
     def __init__(
-            self, num_points, root, transforms=None, train=True
-    ):
+            self, num_points, root, transforms=None, train=True):
         super().__init__()
 
         self.transforms = transforms
@@ -61,6 +105,47 @@ class ModelNet40Cls(data.Dataset):
 
     def __len__(self):
         return self.points.shape[0]
+
+
+class myData(data.Dataset):
+
+    def __init__(self, num_points, root, transforms=None, train=True):
+        super().__init__()
+
+        self.transforms = transforms
+        self.root = os.path.abspath(root)
+        self.data_dir = os.path.join(self.root, 'bos_uniformed')
+
+        self.train, self.num_points = train, num_points
+
+        if train:
+            self.data = _get_data_files(os.path.join(self.root, 'bosphorus_id_train.txt'))
+            self.label = _get_data_files(os.path.join(self.root, 'bosphorus_label_train.txt')).astype(float)
+        else:
+            self.data = _get_data_files(os.path.join(self.root, 'bosphorus_id_test.txt'))
+            self.label = _get_data_files(os.path.join(self.root, 'bosphorus_label_test.txt')).astype(float)
+
+        # self.train_data, self.train_label, self.test_data, self.test_label = _split_data(self.data, self.label)
+
+
+    def __getitem__(self, idx):
+        points_path = os.path.join(self.data_dir, self.data[idx])
+        points = _get_point_file(points_path).astype(float)
+
+        pt_idxs = np.arange(0, points.shape[0])  # 2048
+        if self.train:
+            np.random.shuffle(pt_idxs)
+
+        current_points = points[pt_idxs].copy()
+        label = torch.from_numpy(np.array(self.label[idx])).type(torch.LongTensor)
+
+        if self.transforms is not None:
+            current_points = self.transforms(current_points)
+
+        return current_points, label
+
+    def __len__(self):
+        return len(self.data)
 
 if __name__ == "__main__":
     from torchvision import transforms

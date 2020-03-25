@@ -1,0 +1,6 @@
+/home/user4/anaconda3/lib/python3.6/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+Traceback (most recent call last):
+  File "train_cls.py", line 11, in <module>
+    from data import ModelNet40Cls, myData
+ImportError: cannot import name 'myData'

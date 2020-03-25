@@ -8,7 +8,7 @@ import numpy as np
 import os
 from torchvision import transforms
 from models import RSCNN_SSN_Cls as RSCNN_SSN
-from data import ModelNet40Cls
+from data.ModelNet40Loader import myData
 import utils.pytorch_utils as pt_utils
 import utils.pointnet2_utils as pointnet2_utils
 import data.data_utils as d_utils
@@ -52,7 +52,8 @@ def main():
         d_utils.PointcloudToTensor()
     ])
     
-    train_dataset = ModelNet40Cls(num_points = args.num_points, root = args.data_root, transforms=train_transforms)
+    # train_dataset = ModelNet40Cls(num_points = args.num_points, root = args.data_root, transforms=train_transforms)
+    train_dataset = myData(num_points=args.num_points, root=args.data_root, transforms=train_transforms)
     train_dataloader = DataLoader(
         train_dataset, 
         batch_size=args.batch_size,
@@ -61,7 +62,9 @@ def main():
         pin_memory=True
     )
 
-    test_dataset = ModelNet40Cls(num_points = args.num_points, root = args.data_root, transforms=test_transforms, train=False)
+    # test_dataset = ModelNet40Cls(num_points = args.num_points, root = args.data_root, transforms=test_transforms, train=False)
+    test_dataset = myData(num_points=args.num_points, root=args.data_root, transforms=test_transforms,
+                                 train=False)
     test_dataloader = DataLoader(
         test_dataset, 
         batch_size=args.batch_size,

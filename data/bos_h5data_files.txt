@@ -1,0 +1,5 @@
+/home/user4/database/BosphorusDB/bosphorus_0.h5
+/home/user4/database/BosphorusDB/bosphorus_1.h5
+/home/user4/database/BosphorusDB/bosphorus_2.h5
+/home/user4/database/BosphorusDB/bosphorus_3.h5
+/home/user4/database/BosphorusDB/bosphorus_4.h5

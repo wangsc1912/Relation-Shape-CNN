@@ -79,6 +79,7 @@ class RSCNN_SSN(nn.Module):
         )
         return xyz, features
 
+
     def forward(self, pointcloud: torch.cuda.FloatTensor):
         r"""
             Forward pass of the network

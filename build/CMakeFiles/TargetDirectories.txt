@@ -1,0 +1,3 @@
+/home/user4/coding/Relation-Shape-CNN/build/CMakeFiles/rebuild_cache.dir
+/home/user4/coding/Relation-Shape-CNN/build/CMakeFiles/edit_cache.dir
+/home/user4/coding/Relation-Shape-CNN/build/CMakeFiles/pointnet2_ext.dir
